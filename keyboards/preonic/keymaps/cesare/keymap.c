@@ -19,7 +19,9 @@ enum preonic_keycodes {
   EJCT_TM,
   NXT_TAB,
   PRV_TAB,
-  OF_VIEW
+  OF_VIEW,
+  OF_REVIEW,
+  OF_INBOX
 };
 
 // My macros (code below)
@@ -41,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 [_RAISE] = LAYOUT_preonic_grid( \
-  KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC, \
+  KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    OF_REVIEW, \
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR,  KC_LPRN, KC_RPRN, KC_DEL,\
   KC_CAPS, KC_MUTE, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, KC_PLUS, KC_MINS, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,\
   KC_LSFT, KC_MPLY,  KC_MRWD, KC_MPLY, KC_MFFD, XXXXXXX, KC_EQL,  KC_UNDS, XXXXXXX, KC_LBRC, KC_RBRC, KC_ENT,\
@@ -49,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
 [_LOWER] = LAYOUT_preonic_grid( \
-  KC_ESC, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC, \
+  KC_ESC, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, OF_INBOX, \
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,\
   KC_TAB,   KC_DEL,  KC_INS, XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN,  KC_UP,   KC_RGHT, XXXXXXX, KC_PIPE,\
   KC_LSFT, KC_RCTL, KC_RALT, KC_RGUI, XXXXXXX, XXXXXXX, KC_HOME, KC_PGDN, KC_PGUP,   KC_END, XXXXXXX, KC_ENT,\
@@ -151,6 +153,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING(SS_DOWN(X_T));
           } else {
             SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTRL)SS_UP(X_LSHIFT)SS_UP(X_T));
+          }
+          return FALSE;
+        case OF_INBOX:
+          if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LALT)SS_DOWN(X_LCTRL)SS_DOWN(X_LSHIFT));
+            wait_ms(200);
+            SEND_STRING(SS_DOWN(X_Y));
+          } else {
+            SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTRL)SS_UP(X_LSHIFT)SS_UP(X_Y));
+          }
+          return FALSE;
+        case OF_REVIEW:
+          if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LALT)SS_DOWN(X_LCTRL)SS_DOWN(X_LSHIFT));
+            wait_ms(200);
+            SEND_STRING(SS_DOWN(X_R));
+          } else {
+            SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTRL)SS_UP(X_LSHIFT)SS_UP(X_R));
           }
           return FALSE;
       }

@@ -26,14 +26,6 @@ enum preonic_keycodes {
   SSHOT
 };
 
-// My macros (code below)
-/* enum custom_keycodes {*/
-/*   SCR_LOCK,*/
-/*   EJCT_TM,*/
-/*   NXT_TAB,*/
-/*   PRV_TAB*/
-/* };*/
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_QWERTY] = LAYOUT_preonic_grid( \

@@ -8,7 +8,8 @@ enum planck_layers {
   _COLEMAK,
   _LOWER,
   _RAISE,
-  _ADJUST
+  _ADJUST,
+  _MACROS
 };
 
 enum planck_keycodes {
@@ -16,6 +17,7 @@ enum planck_keycodes {
   COLEMAK,
   LOWER,
   RAISE,
+  MACROS,
   BACKLIT,
   SCR_LOCK,
   EJCT_TM,
@@ -25,7 +27,11 @@ enum planck_keycodes {
   OF_REVIEW,
   OF_INBOX,
   GUI_W,
-  SSHOT
+  SSHOT,
+  SPOTLIGHT,
+  WEB_SEARCH,
+  WINDOW_MANIPULATION,
+  MAIL_ARCHIVE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -34,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,\
   KC_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,\
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,\
-  KC_ESC, KC_LCTL, KC_LALT, KC_LGUI, LOWER,  KC_LCTL,  KC_SPC,  RAISE,    KC_RGUI, KC_RALT, KC_RCTL, KC_RSFT\
+  KC_ESC, KC_LCTL, KC_LALT, KC_LGUI, LOWER,  KC_LCTL,  KC_SPC,  RAISE,    KC_RGUI, KC_RALT, KC_RCTL, MACROS\
 ),
 
 [_COLEMAK] = LAYOUT_planck_grid( \
@@ -63,7 +69,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,   KC_F11,  KC_F12,  KC_F13,  KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,  KC_F19,  KC_F20, KC_PSCREEN,\
   KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,  QWERTY, COLEMAK, XXXXXXX, BACKLIT, XXXXXXX,\
   KC_SLCK, KC_LCTL, KC_LALT, KC_LGUI, _______, _______, _______, _______,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX\
-)
+),
+[_MACROS] = LAYOUT_planck_grid( \
+  SCR_LOCK, PRV_TAB, NXT_TAB, GUI_W,   SSHOT,   WINDOW_MANIPULATION,   WEB_SEARCH,    SPOTLIGHT,    KC_8,  GUI_W, MAIL_ARCHIVE, OF_VIEW,\
+  KC_TAB,   KC_F11,  KC_F12,  KC_F13,  KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,  KC_F19,  KC_F20, KC_PSCREEN,\
+  KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,  QWERTY, COLEMAK, XXXXXXX, BACKLIT, XXXXXXX,\
+  KC_SLCK, KC_LCTL, KC_LALT, KC_LGUI, _______, _______, _______, _______,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX\
+),
 
 
 };
@@ -98,6 +110,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_off(_RAISE);
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
           }
+          return FALSE;
+        case MACROS:
+          if (record->event.pressed) layer_on(_MACROS);
+          else layer_off(_MACROS);
           return FALSE;
         case BACKLIT:
           if (record->event.pressed) {
@@ -192,6 +208,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING(SS_DOWN(X_4));
           } else {
             SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LSHIFT)SS_UP(X_4));
+          }
+          return FALSE;
+        case SPOTLIGHT:
+          if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_SPACE));
+          } else {
+            SEND_STRING(SS_UP(X_SPACE)SS_UP(X_LGUI));
+          }
+          return FALSE;
+        case WEB_SEARCH:
+          if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LALT)SS_DOWN(X_LCTRL)SS_DOWN(X_L));
+          } else {
+            SEND_STRING(SS_UP(X_L)SS_UP(X_LCTRL)SS_UP(X_LALT)SS_UP(X_LGUI));
+          }
+          return FALSE;
+        case WINDOW_MANIPULATION:
+          if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LALT)SS_DOWN(X_LCTRL)SS_DOWN(X_W));
+          } else {
+            SEND_STRING(SS_UP(X_W)SS_UP(X_LCTRL)SS_UP(X_LALT)SS_UP(X_LGUI));
+          }
+          return FALSE;
+        case MAIL_ARCHIVE:
+          if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LCTRL)SS_DOWN(X_A));
+          } else {
+            SEND_STRING(SS_UP(X_A)SS_UP(X_LCTRL)SS_UP(X_LGUI));
           }
           return FALSE;
       }

@@ -33,10 +33,6 @@ const uint8_t flicker_max_levels = 7;
 uint8_t flicker_restore_level = 0;
 #endif
 
-// Fillers to make layering more clear
-#define _______ KC_TRNS
-#define XXXXXXX KC_NO
-
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 
@@ -136,11 +132,6 @@ void matrix_init_user(void) {
 #endif
 }
 #endif
-
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
-{
-  return MACRO_NONE;
-};
 
 void persistant_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);

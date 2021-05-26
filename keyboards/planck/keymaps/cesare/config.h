@@ -40,4 +40,7 @@
 // Most tactile encoders have detents every 4 stages
 #define ENCODER_RESOLUTION 4
 
+// Reducing tapdance time
+#define TAPPING_TERM 100
+
 #endif
